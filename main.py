@@ -7,4 +7,6 @@ def hello_world():
     return 'Hello, world!'
 
 def calculate_ride(hour, distance):
-    return 0
+    price = 1 # starting price
+    price += distance * 2.5 # distance cost
+    return price
