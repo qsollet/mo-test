@@ -1,6 +1,6 @@
 import pytest
 
-from main import app
+from main import app, calculate_ride
 
 @pytest.fixture
 def client():
@@ -12,3 +12,6 @@ def client():
 def test_root(client):
     r = client.get('/')
     assert b'Hello, world!' in r.data
+
+def test_calculate_ride():
+    assert calculate_ride(13, 2) == 6
