@@ -4,21 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MO test</title>
+    <style>
+        .red {
+            background-color: red;
+        }
+        .box {
+            padding: 2em;
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        [[ message ]]
+        <ul>
+            <li v-for="ride in rides">
+                <div class="box" v-bind:class="{ red: ride.distance > 2}">
+                    Id: [[ ride.id ]]
+                    Price: [[ ride.cost ]] euros
+                </div>
+            </li>
+        </ul>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         var app = new Vue({
             el: '#app',
             data: {
-                message: 'Hello Vue!'
+                rides: [{
+                    "id": 1,
+                    "distance": 2,
+                    "startTime": "2020-06-19T13:01:17.031Z",
+                    "duration": 9000
+                }, {
+                    "id": 2,
+                    "distance": 1,
+                    "startTime": "2020-06-19T12:01:17.031Z",
+                    "duration": 6000
+                }, {
+                    "id": 3,
+                    "distance": 5,
+                    "startTime": "2020-06-19T14:01:17.031Z",
+                    "duration": 7000
+                }]
+            },
+            methods: {
+                fetch_prices: function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/v1/rides',
+                        data: JSON.stringify({'rides': app.rides}),
+                        success: function(data) {
+                            app.rides = data.rides
+                        },
+                        contentType: 'application/json',
+                        dataType: 'json'
+                    });
+                }
             },
             delimiters: ['[[', ']]']
         })
+
+        app.fetch_prices()
     </script>
 </body>
 </html>
