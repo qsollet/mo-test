@@ -17,9 +17,10 @@
 <body>
     <div id="app">
         <ul>
-            <li v-for="ride in rides">
+            <li v-for="ride in rides" v-on:click="ride_click(ride)">
                 <div class="box" v-bind:class="{ red: ride.distance > 2}">
                     Id: [[ ride.id ]]
+                    <span v-if="ride.clicked">clicked</span>
                     Price: [[ ride.cost ]] euros
                 </div>
             </li>
@@ -61,6 +62,12 @@
                         contentType: 'application/json',
                         dataType: 'json'
                     });
+                },
+                ride_click: function(ride) {
+                    var d = new Date(0, 0, 0, 0, 0, ride.duration, 0)
+                    var end_date = new Date(new Date(ride.startTime).getTime() + ride.duration * 1000)
+                    alert(d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0') + ':' + d.getSeconds().toString().padStart(2, '0') + ' - ' + end_date.toISOString())
+                    Vue.set(ride, 'clicked', true)
                 }
             },
             delimiters: ['[[', ']]']
