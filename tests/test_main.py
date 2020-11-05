@@ -15,3 +15,11 @@ def test_root(client):
 
 def test_calculate_ride():
     assert calculate_ride(13, 2) == 6
+
+def test_calculate_ride_night():
+    assert calculate_ride(21, 4) == 21
+    assert calculate_ride(4, 10) == 51
+
+def test_calculate_ride_evening():
+    assert calculate_ride(17, 5) == 38.5
+    assert calculate_ride(18, 7) == 53.5
