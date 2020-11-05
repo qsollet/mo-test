@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -6,9 +7,15 @@ app = Flask(__name__)
 def hello_world():
     return render_template('index.html')
 
-@app.route('/api/v1/ride')
+@app.route('/api/v1/rides', methods=['POST'])
 def api_ride():
-    return 'api call'
+    rides = request.get_json()['rides']
+    for ride in rides:
+        ride['cost'] = calculate_ride(
+            datetime.strptime(ride['startTime'], '%Y-%m-%dT%H:%M:%S.%fZ').hour,
+            ride['distance']
+        )
+    return jsonify(rides=rides)
 
 def calculate_ride(hour, distance):
     mile_cost = 2.5
