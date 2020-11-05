@@ -10,8 +10,8 @@ def client():
         yield client
 
 def test_root(client):
-    r = client.get('/')
-    assert b'Hello, world!' in r.data
+    r = client.get('/api/v1/ride')
+    assert b'api call' in r.data
 
 def test_calculate_ride():
     assert calculate_ride(13, 2) == 6
